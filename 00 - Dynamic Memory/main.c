@@ -44,6 +44,22 @@ int main(void) {
         printf("myLetters[%d] = %c\n", ii, myLetters[ii]);
     }
 
+    void *check = realloc(myLetters, (NUM_LETTERS * 2) * sizeof(char));
+    if (check == NULL) {
+        printf("Error:  Could not reallocate memory for myLetters!\n");
+        free(myLetters); myLetters = NULL;
+        return 1;
+    }
+    myLetters = (char*) check;
+
+    for (int ii = 0; ii < NUM_LETTERS; ii++) {
+        myLetters[ii + NUM_LETTERS] = 'A' + ii;
+    }
+
+    for (int ii = 0; ii < (NUM_LETTERS * 2); ii++) {
+        printf("myLetters[%d] = %c\n", ii, myLetters[ii]);
+    }
+
     free(myLetters); myLetters = NULL;
 
     return 0;
