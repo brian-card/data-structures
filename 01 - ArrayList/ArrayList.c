@@ -25,6 +25,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+/// @file ArrayList.c
+///
+/// @brief Library implementation of the ArrayList.
+
 // Standard C includes
 #include <stdio.h>
 #include <stdlib.h>
