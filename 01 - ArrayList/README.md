@@ -4,6 +4,7 @@ The lecture for this content is available on [YouTube](https://www.youtube.com/w
 
 - [Properties of a list](#properties-of-a-list)
 - [List implementations](#list-implementations)
+
 [Array Lists](#array-lists)
 - [Array List definition](#array-list-definition)
 - [Array List initialization](#array-list-initialization)
