@@ -11,6 +11,7 @@ The lecture for this content is available on [YouTube](https://www.youtube.com/w
 - [Memory leaks](#memory-leaks)
 - [Best practices](#best-practices)
 - [Example function](#example-function)
+- [Exercise](#exercise)
 
 ## Dynamic memory functions
 
