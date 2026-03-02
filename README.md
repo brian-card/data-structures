@@ -12,10 +12,10 @@ The lecture for this content is available on [YouTube](https://www.youtube.com/w
 
 ## Prerequisites
 
-_ This course assumes that you've had an introduction to programming class or similar
-_ This course assumes basic familiarity with C
-_ Use of dynamic memory is required in this course
-_ There will be a review of how to use dynamic memory in C in a separate lesson
+- This course assumes that you've had an introduction to programming class or similar
+- This course assumes basic familiarity with C
+- Use of dynamic memory is required in this course
+- There will be a review of how to use dynamic memory in C in a separate lesson
 
 ## Why C?
 
