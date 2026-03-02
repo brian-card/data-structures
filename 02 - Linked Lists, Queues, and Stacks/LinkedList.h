@@ -41,6 +41,12 @@ extern "C"
 {
 #endif
 
+/// @typedef LLValCmp
+///
+/// @brief compare Function pointer type for the function that will compare two
+/// values in the list.
+typedef int (*LLValCmp)(const void*, const void*);
+
 /// @struct ListNode
 ///
 /// @brief Individual node component of a linked list.
@@ -58,26 +64,51 @@ typedef struct ListNode {
 ///
 /// @brief Base container for a linked list.
 ///
-/// @param compare Function pointer to the function that will compare two values
-///   in the list.
+/// @param compare LLValCmp function pointer.
 /// @param head Pointer to the first ListNode in the list.
 /// @param tail Pointer to the last ListNode in the list.
 /// @param size Number of elements in the list.
 typedef struct LinkedList {
-    int (*compare)(const void*, const void*);
+    LLValCmp compare;
     ListNode *head;
     ListNode *tail;
     int size;
 } LinkedList;
 
+/// @enum LLDirection
+///
+/// @brief Direction that a LinkedList is to be traversed (forward or reverse).
+typedef enum LLDirection {
+    FORWARD,
+    REVERSE,
+} LLDirection;
+
+/// @struct LLIter
+///
+/// @brief Iterator for a linked list.
+///
+/// @param cur A pointer to the current node of the iterator.
+/// @param direction The direction that the iterator is traversing the list.
+typedef struct LLIter {
+    ListNode *cur;
+    LLDirection direction;
+} LLIter;
+
 // Base LinkedList prototypes
-LinkedList* linkedListCreate(int (*compare)(const void*, const void*));
-int linkedListInsertFront(LinkedList *linkedList, void *value, int size);
-int linkedListInsertBack(LinkedList *linkedList, void *value, int size);
+LinkedList* linkedListCreate(LLValCmp compare);
+int linkedListInsertFront(LinkedList *linkedList, const void *value, int size);
+int linkedListInsertBack(LinkedList *linkedList, const void *value, int size);
 ListNode* linkedListSearch(LinkedList *linkedList, const void *value);
 int linkedListRemoveValue(LinkedList *linkedList, const void *value);
 void* linkedListPeekFront(LinkedList *linkedList);
 void* linkedListPeekBack(LinkedList *linkedList);
+void* linkedListPopFront(LinkedList *linkedList);
+void* linkedListPopBack(LinkedList *linkedList);
+
+// LinkedList iterator prototypes
+LLIter* llIterCreate(LinkedList *linkedList, LLDirection direction);
+LLIter* llIterNext(LLIter *llIter);
+void* llIterValue(LLIter *llIter);
 
 #ifdef __cplusplus
 } // extern "C"

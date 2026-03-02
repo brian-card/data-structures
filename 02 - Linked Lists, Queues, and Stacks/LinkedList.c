@@ -37,7 +37,7 @@
 
 // ListNode functions need to come first
 
-/// @fn ListNode* listNodeCreate(void *value, int size)
+/// @fn ListNode* listNodeCreate(const void *value, int size)
 ///
 /// @brief Allocate and initialize a ListNode.
 ///
@@ -47,7 +47,7 @@
 ///
 /// @return Returns a pointer to an allocated and initialized ListNode on
 /// success, NULL on failure.
-ListNode* listNodeCreate(void *value, int size) {
+ListNode* listNodeCreate(const void *value, int size) {
     // Both prev and next of the new node need to be initialized to
     // NULL and we need to test its value against NULL, so use calloc.
     ListNode *node = (ListNode*) calloc(1, sizeof(ListNode));
@@ -83,13 +83,13 @@ ListNode* listNodeDestroy(ListNode *node) {
 
 // LinkedList functions follow
 
-/// @fn LinkedList* linkedListCreate(int (*compare)(const void*, const void*))
+/// @fn LinkedList* linkedListCreate(LLValCmp compare)
 ///
 /// @brief Allocate and initialize a linked list.
 ///
 /// @return Returns a pointer to an allocated and initialized LinkedList on
 /// success, NULL on failure.
-LinkedList* linkedListCreate(int (*compare)(const void*, const void*)) {
+LinkedList* linkedListCreate(LLValCmp compare) {
     if (compare == NULL) {
         // We can't create a list like this
         return NULL;
@@ -107,7 +107,8 @@ LinkedList* linkedListCreate(int (*compare)(const void*, const void*)) {
     return linkedList;
 }
 
-/// @fn int linkedListInsertFront(LinkedList *linkedList, void *value, int size)
+/// @fn int linkedListInsertFront(LinkedList *linkedList,
+///   const void *value, int size)
 ///
 /// @brief Insert a new value at the front of a linked list.
 ///
@@ -116,7 +117,7 @@ LinkedList* linkedListCreate(int (*compare)(const void*, const void*)) {
 /// @param size The number of bytes the value takes up.
 ///
 /// @return Returns 0 on success, -1 on failure.
-int linkedListInsertFront(LinkedList *linkedList, void *value, int size) {
+int linkedListInsertFront(LinkedList *linkedList, const void *value, int size) {
     if (linkedList == NULL) {
         // Nothing we can do
         return -1;
@@ -132,7 +133,7 @@ int linkedListInsertFront(LinkedList *linkedList, void *value, int size) {
     if (linkedList->head != NULL) {
         linkedList->head->prev = node;
     }
-    node->next = linkedList->head
+    node->next = linkedList->head;
     // No need to set node->prev since node was created with calloc
     linkedList->head = node;
     if (linkedList->tail == NULL) {
@@ -144,7 +145,8 @@ int linkedListInsertFront(LinkedList *linkedList, void *value, int size) {
     return 0;
 }
 
-/// @fn int linkedListInsertBack(LinkedList *linkedList, void *value, int size)
+/// @fn int linkedListInsertBack(LinkedList *linkedList,
+///   const void *value, int size)
 ///
 /// @brief Insert a new value at the back of a linked list.
 ///
@@ -153,7 +155,7 @@ int linkedListInsertFront(LinkedList *linkedList, void *value, int size) {
 /// @param size The number of bytes the value takes up.
 ///
 /// @return Returns 0 on success, -1 on failure.
-int linkedListInsertBack(LinkedList *linkedList, void *value, int size) {
+int linkedListInsertBack(LinkedList *linkedList, const void *value, int size) {
     if (linkedList == NULL) {
         // Nothing we can do
         return -1;
@@ -333,5 +335,47 @@ void* linkedListPopBack(LinkedList *linkedList) {
     linkedList->size--;
 
     return back;
+}
+
+LLIter* llIterCreate(LinkedList *linkedList, LLDirection direction) {
+    if ((linkedList == NULL) || (linkedList->size == 0)) {
+        return NULL;
+    }
+
+    LLIter *llIter = (LLIter*) malloc(sizeof(LLIter));
+    if (llIter == NULL) {
+        return NULL;
+    }
+
+    llIter->direction = direction;
+    if (direction == FORWARD) {
+        llIter->cur = linkedList->head;
+    } else { // direction == REVERSE
+        llIter->cur = linkedList->tail;
+    }
+
+    return llIter;
+}
+
+LLIter* llIterNext(LLIter *llIter) {
+    if (llIter == NULL) {
+        return NULL;
+    }
+
+    if (llIter->direction == FORWARD) {
+        llIter->cur = llIter->cur->next;
+    } else { // llIter->direction == REVERSE
+        llIter->cur = llIter->cur->prev;
+    }
+
+    if (llIter->cur == NULL) {
+        free(llIter); llIter = NULL;
+    }
+
+    return llIter;
+}
+
+void* llIterValue(LLIter *llIter) {
+    return llIter->cur->value;
 }
 
